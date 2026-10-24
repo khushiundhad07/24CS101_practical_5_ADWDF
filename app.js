@@ -1,4 +1,6 @@
 const express = require('express');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const app = express();
 
@@ -8,6 +10,16 @@ const taskRoutes = require('./routes/taskRoutes');
 
 app.use(logger);
 app.use(express.json());
+
+// MongoDB connection
+mongoose
+    .connect(process.env.MONGO_URI)
+    .then(() => {
+        console.log('MongoDB connected successfully');
+    })
+    .catch((error) => {
+        console.error('MongoDB connection failed:', error);
+    });
 
 app.use('/tasks', taskRoutes);
 
